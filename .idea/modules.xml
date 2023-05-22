@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TheLastOfUs.iml" filepath="$PROJECT_DIR$/TheLastOfUs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../javafx-sdk-20.0.1/lib/demo/demo.iml" filepath="$PROJECT_DIR$/../../javafx-sdk-20.0.1/lib/demo/demo.iml" />
     </modules>
   </component>
 </project>

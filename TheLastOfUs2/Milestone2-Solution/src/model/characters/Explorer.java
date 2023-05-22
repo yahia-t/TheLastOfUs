@@ -18,5 +18,5 @@ public class Explorer extends Hero {
 			}
 		}
 	}
-
+//yahia kaka
 }
