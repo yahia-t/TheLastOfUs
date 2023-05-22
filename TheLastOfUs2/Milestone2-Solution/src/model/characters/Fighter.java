@@ -7,6 +7,7 @@ public class Fighter extends Hero {
 		//fighter will fight
 
 		//i did this change
+		//me too
 	}
 
 }
