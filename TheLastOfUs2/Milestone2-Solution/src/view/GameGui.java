@@ -1,2 +1,4 @@
-package view;public class GameGui {
+package view;
+
+public class GameGui {
 }
