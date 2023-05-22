@@ -9,6 +9,7 @@ public class Fighter extends Hero {
 		//i did this change
 		//me too
 		//test
+		//works
 	}
 
 }
