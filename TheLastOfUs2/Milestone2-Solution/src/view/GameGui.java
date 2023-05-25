@@ -6,19 +6,16 @@ import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.stage.*;
 import javafx.scene.*;
 import model.characters.*;
 import model.collectibles.*;
 import model.world.*;
 import exceptions.InvalidTargetException;
-import exceptions.MovementException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
 
-
-import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GameGui extends Application {
     Stage window;
@@ -28,7 +25,7 @@ public class GameGui extends Application {
         window.setTitle("Last of Us");
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
-        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
+        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
 
 
         HBox h = new HBox();
@@ -43,8 +40,32 @@ public class GameGui extends Application {
 
         h.getChildren().addAll(heroChoice, next);
         heroChoice.setValue(Game.availableHeroes.get(0).getName());
-        Scene window1 = new Scene(h, 200, 200);
+        VBox infoOfSelection = new VBox();
+        int selectedIndex = 0;
 
+        infoOfSelection.getChildren().add(h);
+        heroChoice.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> {
+            
+            int k;
+            for (k = 0; k < Game.availableHeroes.size(); k++) {
+                if (Game.availableHeroes.get(k).getName().equals(newvalue)) {
+                    break;
+                }
+            }
+            Hero selectedStarterHero = Game.availableHeroes.get(k);
+            Label info = new Label("Name: " + selectedStarterHero.getName() + "\n"
+                    + "Max Health Points: " + selectedStarterHero.getMaxHp() + "\n"
+                    + "Type: " + selectedStarterHero.getClass().getSimpleName() + "\n"
+                    + "Attack Damage: " + selectedStarterHero.getAttackDmg() + "\n"
+                    + "Max Acrions: " + selectedStarterHero.getMaxActions());
+
+            infoOfSelection.getChildren().add(1, info);
+            if(infoOfSelection.getChildren().get(2) !=  null)
+                infoOfSelection.getChildren().remove(2);
+        });
+
+
+        Scene window1 = new Scene(infoOfSelection, 200, 200);
 
         GridPane mainGrid = new GridPane();
         mainGrid.setGridLinesVisible(true);
@@ -112,6 +133,9 @@ public class GameGui extends Application {
             window.setScene(window2);
         });
         GridPane controls = new GridPane();
+
+
+
         Button special = new Button("Special");
         special.setOnAction(event -> {
             try {
@@ -122,6 +146,8 @@ public class GameGui extends Application {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             }
         });
+
+
         Button cure = new Button("Cure");
         cure.setOnAction(event -> {
             try {
@@ -134,8 +160,9 @@ public class GameGui extends Application {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             }
         });
-        Button nextHero = new Button("Next");
 
+
+        Button nextHero = new Button("Next");
         nextHero.setOnAction(e -> {
             if (selectedHeroI < Game.heroes.size())
                 selectedHeroI++;
@@ -143,16 +170,17 @@ public class GameGui extends Application {
                 selectedHeroI = 0;
         });
 
-        Button prevHero = new Button("Previous");
 
+        Button prevHero = new Button("Previous");
         prevHero.setOnAction(e -> {
             if (selectedHeroI > 0)
                 selectedHeroI--;
             else
                 selectedHeroI = Game.heroes.size() - 1 ;
         });
-        Button attackbut = new Button("Attack");
 
+
+        Button attackbut = new Button("Attack");
         attackbut.setOnAction(e -> {
             try {
                 Game.heroes.get(selectedHeroI).attack();
@@ -163,6 +191,8 @@ public class GameGui extends Application {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             }
         });
+
+
         Button up = new Button("Up");
         up.setOnAction(event -> {
 
