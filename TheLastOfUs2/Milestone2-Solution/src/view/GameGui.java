@@ -189,16 +189,30 @@ public class GameGui extends Application {
             }
         });
 
+        Button endtur = new Button("endturn");
+        endtur.setOnAction(event -> {
+            try {
+                Game.endTurn();
+                mainBorder.getChildren().remove(mainGrid);
+                GridPane newgr = updateMapGui();
+                mainBorder.setCenter(newgr);
 
+
+            } catch (NotEnoughActionsException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            } catch (InvalidTargetException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            }
+        });
         Button up = new Button("Up");
         up.setOnAction(event -> {
             try {
                 Game.heroes.get(selectedHeroI).move(Direction.RIGHT);
-                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
-                newgr.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
             } catch (NotEnoughActionsException e) {
@@ -212,11 +226,11 @@ public class GameGui extends Application {
             try {
                 Game.heroes.get(selectedHeroI).move(Direction.LEFT);
 
-                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
-                newgr.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -228,11 +242,11 @@ public class GameGui extends Application {
         left.setOnAction(event -> {
             try {
                 Game.heroes.get(selectedHeroI).move(Direction.DOWN);
-                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
-                newgr.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -246,12 +260,12 @@ public class GameGui extends Application {
                 int x = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
                 int y = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
                 Game.heroes.get(selectedHeroI).move(Direction.UP);
-                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
-                newgr.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+
+
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -277,6 +291,7 @@ public class GameGui extends Application {
         controls.add(chooseCollectible , 1, 0);
         VBox atack = new VBox();
         atack.getChildren().add(attackbut);
+        atack.getChildren().add(endtur);
         atack.setAlignment(Pos.CENTER);
         controls.add(atack, 2, 0);
         GridPane movement = new GridPane();
@@ -306,7 +321,11 @@ public class GameGui extends Application {
         ColumnConstraints column = new ColumnConstraints(60);
         RowConstraints row = new RowConstraints(35);
 
+        for (int i = 0; i < Game.heroes.size() ; i++) {
+            Label l = new Label(Game.heroes.get(i).getName());
+            mainGrid.add(l , (int) Game.heroes.get(i).getLocation().getX(), 14 - (int) Game.heroes.get(i).getLocation().getY());
 
+        }
         for (int i = 0; i < 15; i++) {
             mainGrid.getColumnConstraints().add(i, column);
             mainGrid.getRowConstraints().add(i, row);
@@ -322,7 +341,7 @@ public class GameGui extends Application {
                         int finalI = i;
                         int finalJ = k;
                         zombInGrid.setOnAction(zomEv -> {
-                            Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
+                            Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][14 - finalJ]).getCharacter());
                             System.out.println(finalI + " " + finalJ);
                         });
                         mainGrid.add(zombInGrid, i,k);
@@ -337,9 +356,11 @@ public class GameGui extends Application {
                             ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Vaccine){
                         Label l = new Label("Vaccine");
                         mainGrid.add(l, i, k);}
+                    else if(Game.map[i][j] instanceof CharacterCell &&
+                            ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Hero) ;
 
                     else
-                        mainGrid.add(new Label(), i ,k);
+                        mainGrid.add(new Label("empty"), i ,k);
                     }
                     else
                         mainGrid.add(new Label(), i ,k);
