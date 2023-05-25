@@ -12,18 +12,23 @@ import javafx.scene.*;
 import model.characters.*;
 import model.collectibles.*;
 import model.world.*;
+import exceptions.InvalidTargetException;
+import exceptions.MovementException;
+import exceptions.NoAvailableResourcesException;
+import exceptions.NotEnoughActionsException;
 
 
 import java.util.*;
 
 public class GameGui extends Application {
     Stage window;
-    Hero selectedHero;
+    int selectedHeroI;
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
         window.setTitle("Last of Us");
-
-        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
+        // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
+        // C:\Users\Admin\Desktop\Heroes.csv       mohand
+        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
 
 
         HBox h = new HBox();
@@ -74,7 +79,7 @@ public class GameGui extends Application {
                 }
             }
             Label hehe = new Label(Game.availableHeroes.get(k).getName());
-            selectedHero = Game.availableHeroes.get(k);
+            selectedHeroI = 0;
             Game.startGame(Game.availableHeroes.get(k));
 
             for(int i = 0;i <Game.map.length;i++){
@@ -86,7 +91,7 @@ public class GameGui extends Application {
                             int finalI = i;
                             int finalJ = j;
                             zombInGrid.setOnAction(zomEv -> {
-                                selectedHero.setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
+                                Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
                                 System.out.println(finalI + " " + finalJ);
                             });
                                 mainGrid.add(zombInGrid, i, j);
@@ -107,12 +112,62 @@ public class GameGui extends Application {
         });
         GridPane controls = new GridPane();
         Button special = new Button("Special");
+        special.setOnAction(event -> {
+            try {
+                Game.heroes.get(selectedHeroI).useSpecial();
+            } catch (NoAvailableResourcesException e1) {
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            } catch (InvalidTargetException e1) {
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            }
+        });
         Button cure = new Button("Cure");
+        cure.setOnAction(event -> {
+            try {
+                Game.heroes.get(selectedHeroI).cure();
+            } catch (NoAvailableResourcesException e1) {
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            } catch (InvalidTargetException e1) {
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            } catch (NotEnoughActionsException e1) {
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            }
+        });
         Button nextHero = new Button("Next");
+
+        nextHero.setOnAction(e -> {
+            if (selectedHeroI < Game.heroes.size())
+                selectedHeroI++;
+            else
+                selectedHeroI = 0;
+        });
+
         Button prevHero = new Button("Previous");
+
+        prevHero.setOnAction(e -> {
+            if (selectedHeroI > 0)
+                selectedHeroI--;
+            else
+                selectedHeroI = Game.heroes.size() - 1 ;
+        });
         Button attackbut = new Button("Attack");
+
+        attackbut.setOnAction(e -> {
+            try {
+                Game.heroes.get(selectedHeroI).attack();
+            }catch (NotEnoughActionsException e1){
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+
+            }catch (InvalidTargetException e1){
+                ExceptionPopUp.display( "bad move", e1.getMessage());
+            }
+        });
         Button up = new Button("Up");
+        up.setOnAction(event -> {
+
+        });
         Button down = new Button("Down");
+
         Button left = new Button("Left");
         Button right = new Button("Right");
         ColumnConstraints column2 = new ColumnConstraints(320);
