@@ -85,6 +85,7 @@ public class GameGui extends Application {
             mainGrid.getRowConstraints().add(i, row);
         }
 
+        VBox allH = new VBox();
 
 
         Button test = new Button("test");
@@ -118,6 +119,14 @@ public class GameGui extends Application {
 
             newgr.add(hehe,0,14);
             window.setScene(window2);
+
+            mainBorder.getChildren().remove(allH);
+
+            VBox nallH = new VBox();
+            nallH.getChildren().addAll(setSelectHero() , setRemHero());
+            mainBorder.setRight(nallH);
+
+
         });
         GridPane controls = new GridPane();
 
@@ -161,6 +170,11 @@ public class GameGui extends Application {
                 selectedHeroI++;
             else
                 selectedHeroI = 0;
+
+            mainBorder.getChildren().remove(allH);
+            VBox nallH = new VBox();
+            nallH.getChildren().addAll(setSelectHero() , setRemHero());
+            mainBorder.setRight(nallH);
         });
 
 
@@ -170,6 +184,11 @@ public class GameGui extends Application {
                 selectedHeroI--;
             else
                 selectedHeroI = Game.heroes.size() - 1 ;
+
+            mainBorder.getChildren().remove(allH);
+            VBox nallH = new VBox();
+            nallH.getChildren().addAll(setSelectHero() , setRemHero());
+            mainBorder.setRight(nallH);
         });
 
 
@@ -180,6 +199,14 @@ public class GameGui extends Application {
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
+
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+                mainBorder.setRight(nallH);
 
             }catch (NotEnoughActionsException e1){
                 ExceptionPopUp.display( "bad move", e1.getMessage());
@@ -197,6 +224,15 @@ public class GameGui extends Application {
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
 
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+
+                mainBorder.setRight(nallH);
+
 
             } catch (NotEnoughActionsException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -212,6 +248,14 @@ public class GameGui extends Application {
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
+
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+                mainBorder.setRight(nallH);
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -231,6 +275,14 @@ public class GameGui extends Application {
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
 
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+                mainBorder.setRight(nallH);
+
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -246,6 +298,14 @@ public class GameGui extends Application {
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
+
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+                mainBorder.setRight(nallH);
 
 
             } catch (MovementException e) {
@@ -264,6 +324,14 @@ public class GameGui extends Application {
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
+
+                mainBorder.getChildren().remove(allH);
+                VBox nallH = new VBox();
+                if (setRemHero() != null)
+                    nallH.getChildren().addAll(setSelectHero() , setRemHero());
+                else
+                    nallH.getChildren().add(setSelectHero() );
+                mainBorder.setRight(nallH);
 
 
 
@@ -312,6 +380,43 @@ public class GameGui extends Application {
 
         window.setScene(window1);
         window.show();
+    }
+    private VBox setRemHero() {
+        VBox allH = new VBox();
+
+        for (int i = 0; i < Game.heroes.size() ; i++) {
+            if( i != selectedHeroI){
+            HBox targetHero = new HBox();
+            Label herosA = new Label("Name: " + Game.heroes.get(i).getName() + "\n"
+                    + "Current Health Points: " + Game.heroes.get(i).getCurrentHp() + "\n"
+                    + "Type: " + Game.heroes.get(i).getClass().getSimpleName() + "\n"
+                    + "Attack Damage: " + Game.heroes.get(i).getAttackDmg() + "\n"
+                    + "Available Actions: " + Game.heroes.get(i).getActionsAvailable() + "\n"
+                    );
+            targetHero.getChildren().add(herosA);
+            Button setTarget = new Button("Target for heal");
+            int finalI = i;
+            setTarget.setOnAction(event -> {
+                Game.heroes.get(selectedHeroI).setTarget(Game.heroes.get(finalI));
+            });
+            targetHero.getChildren().add(setTarget);
+            allH.getChildren().add(targetHero);
+        }}
+
+        return allH;
+    }
+    private VBox setSelectHero() {
+        VBox allH = new VBox();
+        Label herosA = new Label("Name: " + Game.heroes.get(selectedHeroI).getName() + "\n"
+                + "Current Health Points: " + Game.heroes.get(selectedHeroI).getCurrentHp() + "\n"
+                + "Type: " + Game.heroes.get(selectedHeroI).getClass().getSimpleName() + "\n"
+                + "Attack Damage: " + Game.heroes.get(selectedHeroI).getAttackDmg() + "\n"
+                + "Available Acrions: " + Game.heroes.get(selectedHeroI).getActionsAvailable() + "\n"
+                + "Supply Count: " + Game.heroes.get(selectedHeroI).getSupplyInventory().size()+ "\n"
+                + "Vaccine Count: " + Game.heroes.get(selectedHeroI).getVaccineInventory().size() );
+        allH.setPadding(new Insets(20, 20,20,20));
+        allH.getChildren().add(herosA);
+        return allH;
     }
 
     private GridPane updateMapGui() {
