@@ -331,6 +331,8 @@ public class GameGui extends Application {
 
 
 
+
+
         window.setScene(window1);
         window.show();
     }
