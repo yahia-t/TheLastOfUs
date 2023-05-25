@@ -82,30 +82,7 @@ public class GameGui extends Application {
             selectedHeroI = 0;
             Game.startGame(Game.availableHeroes.get(k));
 
-            for(int i = 0;i <Game.map.length;i++){
-                for(int j = 0; j<Game.map[i].length;j++){
-                    k = 14-j;
-                    if(Game.map[i][j].isVisible()){
-                        if(Game.map[i][j] instanceof CharacterCell &&
-                                ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Zombie) {
-                                Button zombInGrid = new Button("Zombie");
-                            int finalI = i;
-                            int finalJ = k;
-                            zombInGrid.setOnAction(zomEv -> {
-                                Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
-                                System.out.println(finalI + " " + finalJ);
-                            });
-                                mainGrid.add(zombInGrid, i,k);
-                        }
-                        else if(Game.map[i][j] instanceof CollectibleCell &&
-                                ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Supply)
-                            mainGrid.add(new Label("Supply"), i, k);
-                        else if (Game.map[i][j] instanceof CollectibleCell &&
-                                ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Vaccine)
-                            mainGrid.add(new Label("Vaccine"), i, k);
-                    }
-                }
-            }
+            updateMapGui(mainGrid);
 
 
             mainGrid.add(hehe,0,14);
@@ -116,6 +93,7 @@ public class GameGui extends Application {
         special.setOnAction(event -> {
             try {
                 Game.heroes.get(selectedHeroI).useSpecial();
+                updateMapGui(mainGrid);
             } catch (NoAvailableResourcesException e1) {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             } catch (InvalidTargetException e1) {
@@ -126,6 +104,7 @@ public class GameGui extends Application {
         cure.setOnAction(event -> {
             try {
                 Game.heroes.get(selectedHeroI).cure();
+                updateMapGui(mainGrid);
             } catch (NoAvailableResourcesException e1) {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             } catch (InvalidTargetException e1) {
@@ -156,6 +135,7 @@ public class GameGui extends Application {
         attackbut.setOnAction(e -> {
             try {
                 Game.heroes.get(selectedHeroI).attack();
+                updateMapGui(mainGrid);
             }catch (NotEnoughActionsException e1){
                 ExceptionPopUp.display( "bad move", e1.getMessage());
 
@@ -165,12 +145,63 @@ public class GameGui extends Application {
         });
         Button up = new Button("Up");
         up.setOnAction(event -> {
-
+            try {
+                Game.heroes.get(selectedHeroI).move(Direction.RIGHT);
+                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+                mainGrid.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+                updateMapGui(mainGrid);
+            } catch (MovementException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            } catch (NotEnoughActionsException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            }
         });
-        Button down = new Button("Down");
 
+
+        Button down = new Button("Down");
+        down.setOnAction(event -> {
+            try {
+                Game.heroes.get(selectedHeroI).move(Direction.LEFT);
+                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+                mainGrid.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+                updateMapGui(mainGrid);
+            } catch (MovementException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            } catch (NotEnoughActionsException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            }
+        });
         Button left = new Button("Left");
+        left.setOnAction(event -> {
+            try {
+                Game.heroes.get(selectedHeroI).move(Direction.DOWN);
+                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+                mainGrid.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+                updateMapGui(mainGrid);
+            } catch (MovementException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            } catch (NotEnoughActionsException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            }
+        });
         Button right = new Button("Right");
+        right.setOnAction(event -> {
+            try {
+                int x = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
+                int y = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
+                Game.heroes.get(selectedHeroI).move(Direction.UP);
+                Label l = new Label(Game.heroes.get(selectedHeroI).getName());
+                mainGrid.getChildren().remove(l);
+                mainGrid.add(l , (int) Game.heroes.get(selectedHeroI).getLocation().getX(), 14 - (int) Game.heroes.get(selectedHeroI).getLocation().getY());
+
+
+                updateMapGui(mainGrid);
+            } catch (MovementException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            } catch (NotEnoughActionsException e) {
+                ExceptionPopUp.display( "bad move", e.getMessage());
+            }
+        });
         ColumnConstraints column2 = new ColumnConstraints(320);
         RowConstraints row2 = new RowConstraints(195);
         controls.setGridLinesVisible(true);
@@ -209,6 +240,33 @@ public class GameGui extends Application {
 
         window.setScene(window1);
         window.show();
+    }
+
+    private void updateMapGui(GridPane mainGrid) {
+        for(int i = 0;i <Game.map.length;i++){
+            for(int j = 0; j<Game.map[i].length;j++){
+                int k = 14-j;
+                if(Game.map[i][j].isVisible()){
+                    if(Game.map[i][j] instanceof CharacterCell &&
+                            ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Zombie) {
+                        Button zombInGrid = new Button("Zombie");
+                        int finalI = i;
+                        int finalJ = k;
+                        zombInGrid.setOnAction(zomEv -> {
+                            Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
+                            System.out.println(finalI + " " + finalJ);
+                        });
+                        mainGrid.add(zombInGrid, i,k);
+                    }
+                    else if(Game.map[i][j] instanceof CollectibleCell &&
+                            ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Supply)
+                        mainGrid.add(new Label("Supply"), i, k);
+                    else if (Game.map[i][j] instanceof CollectibleCell &&
+                            ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Vaccine)
+                        mainGrid.add(new Label("Vaccine"), i, k);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
