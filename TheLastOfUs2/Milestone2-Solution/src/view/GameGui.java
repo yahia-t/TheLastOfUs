@@ -2,6 +2,7 @@ package view;
 
 
 import engine.*;
+import exceptions.MovementException;
 import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -41,9 +42,15 @@ public class GameGui extends Application {
         h.getChildren().addAll(heroChoice, next);
         heroChoice.setValue(Game.availableHeroes.get(0).getName());
         VBox infoOfSelection = new VBox();
+        Hero selectedStarterHero1 = Game.availableHeroes.get(0);
         int selectedIndex = 0;
+        Label infostart = new Label("Name: " + selectedStarterHero1.getName() + "\n"
+                + "Max Health Points: " + selectedStarterHero1.getMaxHp() + "\n"
+                + "Type: " + selectedStarterHero1.getClass().getSimpleName() + "\n"
+                + "Attack Damage: " + selectedStarterHero1.getAttackDmg() + "\n"
+                + "Max Acrions: " + selectedStarterHero1.getMaxActions());
 
-        infoOfSelection.getChildren().add(h);
+        infoOfSelection.getChildren().addAll(h,infostart);
         heroChoice.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> {
             
             int k;
@@ -63,7 +70,6 @@ public class GameGui extends Application {
             if(infoOfSelection.getChildren().get(2) !=  null)
                 infoOfSelection.getChildren().remove(2);
         });
-
 
         Scene window1 = new Scene(infoOfSelection, 200, 200);
 
