@@ -2,6 +2,7 @@ package view;
 
 
 import engine.*;
+import exceptions.MovementException;
 import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -25,7 +26,7 @@ public class GameGui extends Application {
         window.setTitle("Last of Us");
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
-        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
+        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
 
 
         HBox h = new HBox();
