@@ -18,7 +18,7 @@ import java.util.*;
 
 public class GameGui extends Application {
     Stage window;
-
+    Hero selectedHero;
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
         window.setTitle("Last of Us");
@@ -74,14 +74,23 @@ public class GameGui extends Application {
                 }
             }
             Label hehe = new Label(Game.availableHeroes.get(k).getName());
+            selectedHero = Game.availableHeroes.get(k);
             Game.startGame(Game.availableHeroes.get(k));
 
             for(int i = 0;i <Game.map.length;i++){
                 for(int j = 0; j<Game.map[i].length;j++){
                     if(Game.map[i][j].isVisible()){
                         if(Game.map[i][j] instanceof CharacterCell &&
-                                ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Zombie)
-                            mainGrid.add(new Button("Zombie"), i, j);
+                                ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Zombie) {
+                                Button zombInGrid = new Button("Zombie");
+                            int finalI = i;
+                            int finalJ = j;
+                            zombInGrid.setOnAction(zomEv -> {
+                                selectedHero.setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
+                                System.out.println(finalI + " " + finalJ);
+                            });
+                                mainGrid.add(zombInGrid, i, j);
+                        }
                         else if(Game.map[i][j] instanceof CollectibleCell &&
                                 ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Supply)
                             mainGrid.add(new Label("Supply"), i, j);
@@ -133,6 +142,7 @@ public class GameGui extends Application {
         movement.add(right, 2,1);
         movement.setAlignment(Pos.CENTER);
         controls.add(movement, 3,0);
+
 
 
 
