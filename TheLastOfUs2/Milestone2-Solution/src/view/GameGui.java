@@ -49,7 +49,7 @@ public class GameGui extends Application {
         GridPane mainGrid = new GridPane();
         mainGrid.setGridLinesVisible(true);
         mainGrid.setPadding(new Insets(10, 10, 10, 10));
-        ColumnConstraints column = new ColumnConstraints(50);
+        ColumnConstraints column = new ColumnConstraints(60);
         RowConstraints row = new RowConstraints(35);
 
 
@@ -61,7 +61,7 @@ public class GameGui extends Application {
 
         Button test = new Button("test");
         test.setOnAction(e -> ExceptionPopUp.display("Exception", "Bad Move"));
-        test.setMaxSize(50, 35);
+        test.setMaxSize(65, 35);
         mainGrid.add(test, 14, 14);
 
 
@@ -84,30 +84,31 @@ public class GameGui extends Application {
 
             for(int i = 0;i <Game.map.length;i++){
                 for(int j = 0; j<Game.map[i].length;j++){
+                    k = 14-j;
                     if(Game.map[i][j].isVisible()){
                         if(Game.map[i][j] instanceof CharacterCell &&
                                 ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Zombie) {
                                 Button zombInGrid = new Button("Zombie");
                             int finalI = i;
-                            int finalJ = j;
+                            int finalJ = k;
                             zombInGrid.setOnAction(zomEv -> {
                                 Game.heroes.get(selectedHeroI).setTarget(((CharacterCell)Game.map[finalI][finalJ]).getCharacter());
                                 System.out.println(finalI + " " + finalJ);
                             });
-                                mainGrid.add(zombInGrid, i, j);
+                                mainGrid.add(zombInGrid, i,k);
                         }
                         else if(Game.map[i][j] instanceof CollectibleCell &&
                                 ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Supply)
-                            mainGrid.add(new Label("Supply"), i, j);
+                            mainGrid.add(new Label("Supply"), i, k);
                         else if (Game.map[i][j] instanceof CollectibleCell &&
                                 ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Vaccine)
-                            mainGrid.add(new Label("Vaccine"), i, j);
+                            mainGrid.add(new Label("Vaccine"), i, k);
                     }
                 }
             }
 
 
-            mainGrid.add(hehe,0,0);
+            mainGrid.add(hehe,0,14);
             window.setScene(window2);
         });
         GridPane controls = new GridPane();
