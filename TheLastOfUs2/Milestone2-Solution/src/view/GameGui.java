@@ -27,7 +27,7 @@ public class GameGui extends Application {
         window.setTitle("Last of Us");
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
-        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
+        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
 
         HBox h = new HBox();
         ChoiceBox<String> heroChoice = new ChoiceBox<>();
@@ -100,6 +100,9 @@ public class GameGui extends Application {
 
 
 
+
+
+
         next.setOnAction(e -> {
 
             int k;
@@ -118,6 +121,8 @@ public class GameGui extends Application {
 
 
             newgr.add(hehe,0,14);
+
+
             window.setScene(window2);
 
             mainBorder.getChildren().remove(allH);
@@ -129,6 +134,7 @@ public class GameGui extends Application {
 
         });
         GridPane controls = new GridPane();
+
 
 
 
@@ -369,6 +375,23 @@ public class GameGui extends Application {
         movement.add(right, 2,1);
         movement.setAlignment(Pos.CENTER);
         controls.add(movement, 3,0);
+
+        VBox infoOnRight = new VBox();
+        VBox infoOfHeroes =  new VBox();
+        //infoOnRight.setAlignment(Pos.CENTER_LEFT);
+        for(int i = 0; i<Game.heroes.size();i++){
+            System.out.println("a7a");
+            //Label curr = new Label("a7a");
+            Label curr = new Label(Game.heroes.get(i).getName());
+            infoOfHeroes.getChildren().add(curr);
+        }
+        infoOnRight.getChildren().add(infoOfHeroes);
+        mainBorder.setRight(infoOnRight);
+
+
+
+
+
 
 
 
