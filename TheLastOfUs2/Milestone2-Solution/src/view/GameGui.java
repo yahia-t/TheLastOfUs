@@ -181,7 +181,7 @@ public class GameGui extends Application {
 
         Button nextHero = new Button("Next");
         nextHero.setOnAction(e -> {
-            if (selectedHeroI < Game.heroes.size())
+            if (selectedHeroI < Game.heroes.size()-1)
                 selectedHeroI++;
             else
                 selectedHeroI = 0;
@@ -278,8 +278,7 @@ public class GameGui extends Application {
                 int currHp = Game.heroes.get(selectedHeroI).getCurrentHp();
                 Game.heroes.get(selectedHeroI).move(Direction.RIGHT);
 
-                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
-                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
+
 
 
 
@@ -300,6 +299,9 @@ public class GameGui extends Application {
                 else
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
+
+                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
+                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
 
 
             } catch (MovementException e) {
