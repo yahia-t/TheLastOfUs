@@ -27,7 +27,7 @@ public class GameGui extends Application {
         window.setTitle("Last of Us");
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
-        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
+        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
 
         HBox h = new HBox();
         ChoiceBox<String> heroChoice = new ChoiceBox<>();
@@ -157,9 +157,17 @@ public class GameGui extends Application {
         cure.setOnAction(event -> {
             try {
                 Game.heroes.get(selectedHeroI).cure();
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
+
+
             } catch (NoAvailableResourcesException e1) {
                 ExceptionPopUp.display( "bad move", e1.getMessage());
             } catch (InvalidTargetException e1) {
@@ -202,6 +210,12 @@ public class GameGui extends Application {
         attackbut.setOnAction(e -> {
             try {
                 Game.heroes.get(selectedHeroI).attack();
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
@@ -213,6 +227,7 @@ public class GameGui extends Application {
                 else
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
+
 
             }catch (NotEnoughActionsException e1){
                 ExceptionPopUp.display( "bad move", e1.getMessage());
@@ -226,6 +241,12 @@ public class GameGui extends Application {
         endtur.setOnAction(event -> {
             try {
                 Game.endTurn();
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
@@ -237,7 +258,9 @@ public class GameGui extends Application {
                 else
                     nallH.getChildren().add(setSelectHero() );
 
+
                 mainBorder.setRight(nallH);
+
 
 
             } catch (NotEnoughActionsException e) {
@@ -245,11 +268,26 @@ public class GameGui extends Application {
             } catch (InvalidTargetException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
             }
+
         });
         Button up = new Button("Up");
         up.setOnAction(event -> {
             try {
+
+                int currHp = Game.heroes.get(selectedHeroI).getCurrentHp();
                 Game.heroes.get(selectedHeroI).move(Direction.RIGHT);
+
+                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
+                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
+
+
+
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -262,6 +300,7 @@ public class GameGui extends Application {
                 else
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
+
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -274,7 +313,16 @@ public class GameGui extends Application {
         Button down = new Button("Down");
         down.setOnAction(event -> {
             try {
+
+                int currHp = Game.heroes.get(selectedHeroI).getCurrentHp();
+
                 Game.heroes.get(selectedHeroI).move(Direction.LEFT);
+
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
 
 
                 mainBorder.getChildren().remove(mainGrid);
@@ -289,6 +337,8 @@ public class GameGui extends Application {
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
 
+                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
+                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
 
             } catch (MovementException e) {
                 ExceptionPopUp.display( "bad move", e.getMessage());
@@ -299,7 +349,16 @@ public class GameGui extends Application {
         Button left = new Button("Left");
         left.setOnAction(event -> {
             try {
+
+                int currHp = Game.heroes.get(selectedHeroI).getCurrentHp();
                 Game.heroes.get(selectedHeroI).move(Direction.DOWN);
+
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -312,6 +371,9 @@ public class GameGui extends Application {
                 else
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
+
+                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
+                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
 
 
             } catch (MovementException e) {
@@ -325,7 +387,15 @@ public class GameGui extends Application {
             try {
                 int x = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
                 int y = (int) Game.heroes.get(selectedHeroI).getLocation().getX();
+
+                int currHp = Game.heroes.get(selectedHeroI).getCurrentHp();
                 Game.heroes.get(selectedHeroI).move(Direction.UP);
+
+
+                if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
+                else if ( Game.checkWin())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -333,11 +403,16 @@ public class GameGui extends Application {
 
                 mainBorder.getChildren().remove(allH);
                 VBox nallH = new VBox();
+
                 if (setRemHero() != null)
                     nallH.getChildren().addAll(setSelectHero() , setRemHero());
                 else
                     nallH.getChildren().add(setSelectHero() );
                 mainBorder.setRight(nallH);
+
+                if(currHp >  Game.heroes.get(selectedHeroI).getCurrentHp())
+                    ExceptionPopUp.display("WHooops" , "you stepped in a trap ");
+
 
 
 
@@ -486,6 +561,10 @@ public class GameGui extends Application {
                         mainGrid.add(l, i, k);}
                     else if(Game.map[i][j] instanceof CharacterCell &&
                             ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Hero) ;
+
+                    else if(Game.map[i][j] instanceof TrapCell){
+                        Label l = new Label("Trap");
+                    mainGrid.add(l, i, k);}
 
                     else
                         mainGrid.add(new Label("empty"), i ,k);
