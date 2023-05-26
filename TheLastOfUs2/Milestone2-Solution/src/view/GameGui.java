@@ -7,6 +7,7 @@ import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.*;
 import javafx.scene.*;
 import model.characters.*;
@@ -27,7 +28,7 @@ public class GameGui extends Application {
         window.setTitle("Last of Us");
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
-        Game.loadHeroes("C:\\college\\projectM3\\TheLastOfUs\\TheLastOfUs2\\Milestone2-Solution\\Heroes.csv");
+        Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
 
         HBox h = new HBox();
         ChoiceBox<String> heroChoice = new ChoiceBox<>();
@@ -158,11 +159,10 @@ public class GameGui extends Application {
             try {
                 Game.heroes.get(selectedHeroI).cure();
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
-
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
                 mainBorder.setCenter(newgr);
@@ -211,10 +211,10 @@ public class GameGui extends Application {
             try {
                 Game.heroes.get(selectedHeroI).attack();
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -242,10 +242,10 @@ public class GameGui extends Application {
             try {
                 Game.endTurn();
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -283,11 +283,10 @@ public class GameGui extends Application {
 
 
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
-
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -319,11 +318,10 @@ public class GameGui extends Application {
                 Game.heroes.get(selectedHeroI).move(Direction.LEFT);
 
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
-
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -354,10 +352,10 @@ public class GameGui extends Application {
                 Game.heroes.get(selectedHeroI).move(Direction.DOWN);
 
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
 
                 mainBorder.getChildren().remove(mainGrid);
@@ -392,10 +390,10 @@ public class GameGui extends Application {
                 Game.heroes.get(selectedHeroI).move(Direction.UP);
 
 
-                if(Game.checkGameOver())
-                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
-                else if ( Game.checkWin())
+                if (Game.checkWin())
                     endGamePopUp.display(primaryStage,"Game Has Concluded" , "CONGRATULATIONS YOU WON");
+                else if(Game.checkGameOver())
+                    endGamePopUp.display(primaryStage,"Game Has Concluded" , "you lost better luck next time");
 
                 mainBorder.getChildren().remove(mainGrid);
                 GridPane newgr = updateMapGui();
@@ -456,7 +454,6 @@ public class GameGui extends Application {
         //infoOnRight.setAlignment(Pos.CENTER_LEFT);
         for(int i = 0; i<Game.heroes.size();i++){
             System.out.println("a7a");
-            //Label curr = new Label("a7a");
             Label curr = new Label(Game.heroes.get(i).getName());
             infoOfHeroes.getChildren().add(curr);
         }
@@ -489,8 +486,7 @@ public class GameGui extends Application {
                     + "Current Health Points: " + Game.heroes.get(i).getCurrentHp() + "\n"
                     + "Type: " + Game.heroes.get(i).getClass().getSimpleName() + "\n"
                     + "Attack Damage: " + Game.heroes.get(i).getAttackDmg() + "\n"
-                    + "Available Actions: " + Game.heroes.get(i).getActionsAvailable() + "\n"
-                    );
+                    + "Available Actions: " + Game.heroes.get(i).getActionsAvailable() + "\n");
             targetHero.getChildren().add(herosA);
             Button setTarget = new Button("Target for heal");
             int finalI = i;
@@ -511,7 +507,7 @@ public class GameGui extends Application {
                 + "Attack Damage: " + Game.heroes.get(selectedHeroI).getAttackDmg() + "\n"
                 + "Available Acrions: " + Game.heroes.get(selectedHeroI).getActionsAvailable() + "\n"
                 + "Supply Count: " + Game.heroes.get(selectedHeroI).getSupplyInventory().size()+ "\n"
-                + "Vaccine Count: " + Game.heroes.get(selectedHeroI).getVaccineInventory().size() );
+                + "Vaccine Count: " + Game.heroes.get(selectedHeroI).getVaccineInventory().size() + "\n" + " ") ;
         allH.setPadding(new Insets(20, 20,20,20));
         allH.getChildren().add(herosA);
         return allH;
@@ -553,21 +549,22 @@ public class GameGui extends Application {
                             ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Supply){
 
                             Label l = new Label("Supply");
+                            l.setTextFill(Paint.valueOf("#0000FF"));
                             mainGrid.add(l, i, k);}
 
                     else if (Game.map[i][j] instanceof CollectibleCell &&
                             ((CollectibleCell)Game.map[i][j]).getCollectible() instanceof Vaccine){
                         Label l = new Label("Vaccine");
+                        l.setTextFill(Paint.valueOf("#00FF00"));
                         mainGrid.add(l, i, k);}
                     else if(Game.map[i][j] instanceof CharacterCell &&
                             ((CharacterCell)Game.map[i][j]).getCharacter() instanceof Hero) ;
 
-                    else if(Game.map[i][j] instanceof TrapCell){
-                        Label l = new Label("Trap");
-                    mainGrid.add(l, i, k);}
-
-                    else
-                        mainGrid.add(new Label("empty"), i ,k);
+                    else {
+                        Label l = new Label("empty");
+                        l.setTextFill(Paint.valueOf("#bebebe"));
+                        mainGrid.add(l, i, k);
+                    }
                     }
                     else
                         mainGrid.add(new Label(), i ,k);
