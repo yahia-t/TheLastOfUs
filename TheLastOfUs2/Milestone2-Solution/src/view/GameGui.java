@@ -26,6 +26,7 @@ public class GameGui extends Application {
 
         window = primaryStage;
         window.setTitle("Last of Us");
+        window.setResizable(false);
         // C:\college\projectM3\TheLastOfUs\TheLastOfUs2\Milestone2-Solution\Heroes.csv    yahia
         // C:\Users\Admin\Desktop\Heroes.csv       mohand
         Game.loadHeroes("C:\\Users\\Admin\\Desktop\\Heroes.csv");
@@ -501,6 +502,7 @@ public class GameGui extends Application {
     }
     private VBox setSelectHero() {
         VBox allH = new VBox();
+        HBox targetHero = new HBox();
         Label herosA = new Label("Name: " + Game.heroes.get(selectedHeroI).getName() + "\n"
                 + "Current Health Points: " + Game.heroes.get(selectedHeroI).getCurrentHp() + "\n"
                 + "Type: " + Game.heroes.get(selectedHeroI).getClass().getSimpleName() + "\n"
@@ -508,8 +510,13 @@ public class GameGui extends Application {
                 + "Available Acrions: " + Game.heroes.get(selectedHeroI).getActionsAvailable() + "\n"
                 + "Supply Count: " + Game.heroes.get(selectedHeroI).getSupplyInventory().size()+ "\n"
                 + "Vaccine Count: " + Game.heroes.get(selectedHeroI).getVaccineInventory().size() + "\n" + " ") ;
-        allH.setPadding(new Insets(20, 20,20,20));
-        allH.getChildren().add(herosA);
+        //allH.setPadding(new Insets(20, 20,20,20));
+        Button setTarget = new Button("Target for heal");
+        setTarget.setOnAction(event -> {
+            Game.heroes.get(selectedHeroI).setTarget(Game.heroes.get(selectedHeroI));
+        });
+        targetHero.getChildren().addAll(herosA,setTarget );
+        allH.getChildren().addAll(targetHero);
         return allH;
     }
 

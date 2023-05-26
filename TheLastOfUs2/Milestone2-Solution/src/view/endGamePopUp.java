@@ -15,6 +15,7 @@ public class endGamePopUp {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
+        window.setResizable(false);
         window.setMinWidth(250);
 
         Label l = new Label();

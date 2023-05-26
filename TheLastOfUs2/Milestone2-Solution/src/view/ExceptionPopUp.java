@@ -13,6 +13,7 @@ public class ExceptionPopUp {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);
+        window.setResizable(false);
 
         Label l = new Label();
         l.setText(message);
